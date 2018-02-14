@@ -85,7 +85,7 @@ class convert_data extends \phpbb\db\migration\migration
 	*/
 	public function rename_table($old_name, $new_name)
 	{
-		switch($this->db->get_sql_layer())
+		switch ($this->db->get_sql_layer())
 		{
 			// SQL Server dbms support this syntax
 			case 'mssql':

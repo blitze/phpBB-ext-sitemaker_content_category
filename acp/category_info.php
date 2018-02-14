@@ -11,7 +11,7 @@ namespace blitze\category\acp;
 
 class category_info
 {
-	function module()
+	public function module()
 	{
 		return array(
 			'filename'	=> '\blitze\category\acp\category_module',

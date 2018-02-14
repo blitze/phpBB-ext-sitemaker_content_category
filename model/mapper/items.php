@@ -125,7 +125,7 @@ class items extends base_mapper
 		$this->collection->clear();
 		while ($row = $this->db->sql_fetchrow($result))
 		{
-			$this->collection[$id] = $this->create_entity($row);
+			$this->collection[$row['cat_id']] = $this->create_entity($row);
 		}
 		$this->db->sql_freeresult($result);
 

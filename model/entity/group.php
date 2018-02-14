@@ -51,7 +51,7 @@ final class group extends base_entity
 	}
 
 	/**
-	 * @param string $group_name
+	 * @param string $name
 	 * @return $this
 	 */
 	public function set_group_name($name)

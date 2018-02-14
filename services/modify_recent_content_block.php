@@ -133,7 +133,7 @@ class modify_recent_content_block extends \blitze\content\blocks\recent
 	}
 
 	/**
-	 * @param array $content_types
+	 * @param array $categories
 	 * @param string $type
 	 * @return string
 	 */

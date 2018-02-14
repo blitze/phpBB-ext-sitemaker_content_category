@@ -44,7 +44,7 @@ class listener implements EventSubscriberInterface
 	/**
 	 * @return array
 	 */
-	static public function getSubscribedEvents()
+	public static function getSubscribedEvents()
 	{
 		return array(
 			'blitze.content.field_controller.modify_data'	=> 'get_category_groups',

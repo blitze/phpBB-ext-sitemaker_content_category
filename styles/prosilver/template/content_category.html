@@ -1,0 +1,80 @@
+<!-- IF not S_HIDE_HEADERS --><!-- INCLUDE overall_header.html --><!-- ENDIF -->
+
+<!-- IF CONTENT_TYPE -->
+<h2 class="forum-title">{CONTENT_TYPE}</h2>
+
+<div>{CONTENT_DESC}</div><br />
+<!-- ENDIF -->
+
+<!-- BEGIN cat_row -->
+<div class="panel post cms-block-spacing">
+	<div class="inner">
+		<div class="postbody pt-postbody">
+			<h2><a href="{cat_row.U_VIEW}">{cat_row.NAME}</a></h2>
+			<div class="<!-- IF cat_row.S_TOPICS is even -->column1<!-- ELSE -->img-align-left large-img<!-- ENDIF -->">
+			<!-- BEGIN topic_row(0,0) -->
+				<!-- IF not topic_row.CUSTOM_DISPLAY -->
+					<h3 class="first"><a href="{cat_row.topic_row.TOPIC_URL}">{cat_row.topic_row.TOPIC_TITLE}</a></h3>
+					<p class="author"><!-- IF S_IS_BOT -->{cat_row.topic_row.MINI_POST_IMG}<!-- ELSE --><a href="{cat_row.topic_row.U_MINI_POST}">{cat_row.topic_row.MINI_POST_IMG}</a><!-- ENDIF --><span class="responsive-hide">{L_POST_BY_AUTHOR} </span><strong>{cat_row.topic_row.TOPIC_AUTHOR_FULL}</strong> | <i class="fa fa-calendar"></i> {cat_row.topic_row.TOPIC_DATE|date("m/d/Y")}<!-- IF S_COMMENTS --> | <i class="fa fa-comments-o fa-lg"></i> <a href="{cat_row.topic_row.TOPIC_URL}#comments">{cat_row.topic_row.TOPIC_COMMENTS}<span class="responsive-hide"> {L_COMMENTS}</span></a><!-- ENDIF --></p>
+				<!-- ENDIF -->
+					<div class="content">
+						<!-- IF cat_row.topic_row.CUSTOM_DISPLAY -->
+							{cat_row.topic_row.CUSTOM_DISPLAY}
+						<!-- ELSE -->
+							{cat_row.topic_row.SEQ_DISPLAY}
+
+							<div class="clear"></div>
+							<div class="buttons pull-right">
+								<a href="{cat_row.topic_row.TOPIC_URL}" class="button icon-button">{L_READ_MORE}</a>
+							</div>
+						<!-- ENDIF -->
+						<div class="clear"></div>
+					</div>
+				<!-- IF cat_row.S_TOPICS is odd --><p><hr class="dashed" /></p><!-- ENDIF -->
+			<!-- END topic_row -->
+			</div>
+			<!-- IF .cat_row.topic_row > 1 -->
+			<div class="<!-- IF cat_row.S_TOPICS is even --> column2 pt-x-divider-dotted<!-- ELSE --> list-block-2cols<!-- ENDIF --> medium-img img-align-left">
+				<ul class="pt-list">
+				<!-- BEGIN topic_row(1) -->
+					<li>
+						<div class="content">
+							<div class="img-ui">{cat_row.topic_row.IMAGE}</div>
+							<div class="topic-title">
+								<!-- IF S_IS_BOT -->{cat_row.topic_row.MINI_POST_IMG}<!-- ELSE --><a href="{cat_row.topic_row.U_MINI_POST}">{cat_row.topic_row.MINI_POST_IMG}</a><!-- ENDIF -->
+								<a href="{cat_row.topic_row.TOPIC_URL}">{cat_row.topic_row.TOPIC_TITLE}</a>
+							</div>
+							<div class="small"><i class="fa fa-user"></i> <span class="responsive-hide">{L_POST_BY_AUTHOR} </span><strong>{cat_row.topic_row.TOPIC_AUTHOR_FULL}</strong></div>
+							<div class="small"><i class="fa fa-calendar"></i> {cat_row.topic_row.TOPIC_DATE|date("m/d/Y")}</div>
+						</div>
+					</li>
+				<!-- END topic_row -->
+				</ul>
+			</div>
+			<!-- ENDIF -->
+		</div>
+	</div>
+</div>
+<!-- BEGINELSE -->
+<div class="panel post cms-block-spacing">
+	<div class="inner">
+		{L_NO_TOPICS}
+	</div>
+</div>
+<!-- END cat_row -->
+
+<!-- IF .pagination or TOTAL_POSTS -->
+<div class="action-bar bottom">
+	<div class="pagination">
+		{TOTAL_POSTS} 
+		<!-- IF .pagination -->
+		<!-- INCLUDE pagination.html -->
+		<!-- ELSE -->
+		&bull; {PAGE_NUMBER}
+		<!-- ENDIF -->
+	</div>
+	<div class="clear"></div>
+</div>
+<!-- ENDIF -->
+
+<!-- IF not S_HIDE_HEADERS --><!-- INCLUDE overall_footer.html --><!-- ENDIF -->

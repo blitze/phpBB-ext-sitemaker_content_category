@@ -1,0 +1,11 @@
+{
+  "name": "phpBB Sitemaker Content Category",
+  "dependencies": {
+    "toast-grid": "https://github.com/daneden/Toast.git#master"
+  },
+  "overrides": {
+    "toast-grid": {
+      "main": []
+    }
+  }
+}

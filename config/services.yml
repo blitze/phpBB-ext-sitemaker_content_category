@@ -1,0 +1,93 @@
+parameters:
+    tables.blitze.category.groups: %core.table_prefix%sm_category_grps
+    tables.blitze.category.items: %core.table_prefix%sm_categories
+    tables.blitze.category.data: %core.table_prefix%sm_categories_data
+
+services:
+
+    blitze.category.mapper.factory:
+        class: blitze\category\model\mapper_factory
+        arguments:
+            - '@config'
+            - '@dbal.conn'
+            - '@blitze.sitemaker.forum.data'
+            - mappers:
+                groups: '%tables.blitze.category.groups%'
+                items: '%tables.blitze.category.items%'
+                data: '%tables.blitze.category.data%'
+
+    blitze.category.action_handler:
+        class: blitze\category\services\action_handler
+        arguments:
+            - '@cache.driver'
+            - '@request'
+            - '@language'
+            - '@blitze.category.mapper.factory'
+
+    blitze.category.categories:
+        class: blitze\category\services\categories
+        arguments:
+            - '@blitze.category.mapper.factory'
+
+    blitze.category.display:
+        class: blitze\category\services\tree\display
+        shared: false
+        arguments:
+            - '@dbal.conn'
+            - '@controller.helper'
+            - '@user'
+            - '%tables.blitze.category.items%'
+            - 'cat_id'
+
+    blitze.category.admin.controller:
+        class: blitze\category\controller\admin
+        arguments:
+            - '@request'
+            - '@language'
+            - '@blitze.category.action_handler'
+
+# Events
+    blitze.category.event.listener:
+        class: blitze\category\event\listener
+        arguments:
+            - '@dbal.conn'
+            - '@blitze.category.categories'
+            - '%tables.blitze.category.items%'
+            - '%tables.blitze.category.data%'
+        tags:
+            - { name: event.listener }
+
+# Content field
+    blitze.category.form.field.category:
+        class: blitze\category\services\form\field\category
+        parent: blitze.content.form.field.base
+        arguments:
+            - '@dbal.conn'
+            - '@controller.helper'
+            - '@blitze.category.display'
+            - '%tables.blitze.category.data%'
+        tags:
+            - { name: sitemaker.content.form.field }
+
+# Blocks
+    blitze.category.block.categories:
+        class: blitze\category\blocks\categories
+        arguments:
+            - '@language'
+            - '@blitze.category.categories'
+            - '@blitze.category.display'
+            - '%tables.blitze.category.data%'
+        calls:
+            - [set_name, [blitze.category.block.categories]]
+        tags:
+            - { name: sitemaker.block }
+
+    blitze.category.recent.content.block:
+        class: blitze\category\services\modify_recent_content_block
+        decorates: 'blitze.content.block.recent'
+        parent: blitze.content.block.recent
+        arguments:
+            - '@controller.helper'
+            - '@blitze.category.categories'
+            - '@blitze.category.display'
+            - '%tables.blitze.category.data%'

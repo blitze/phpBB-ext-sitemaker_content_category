@@ -16,19 +16,25 @@ Organize your phpBB Sitemaker Content into categories
 * Filter content by category
 * Adds a category constraint to Recent Content block
 
+## Minimum Requirements
+
+* [phpBB 3.2](https://www.phpbb.com/)
+* [phpBB Sitemaker 3.1.0](https://github.com/blitze/phpBB-ext-sitemaker)
+* [phpBB Sitemaker Content 3.0.0-dev](https://github.com/blitze/phpBB-ext-sitemaker_content)
+
 ## Installation
 
 Clone into phpBB/ext/blitze/category:
 
-    git clone https://github.com/blitze/phpBB-ext-sitemaker_category.git phpBB/ext/blitze/category
+    git clone https://github.com/blitze/phpBB-ext-sitemaker_content_category.git phpBB/ext/blitze/category
 
 Go to "ACP" > "Customise" > "Extensions" and enable the "Sitemaker Content Categories" extension.
 
 ## Collaborate
 
-* Create a issue in the [tracker](https://github.com/blitze/phpBB-ext-sitemaker_category/issues)
+* Create a issue in the [tracker](https://github.com/blitze/phpBB-ext-sitemaker_content_category/issues)
 * Note the restrictions for [branch names](https://wiki.phpbb.com/Git#Branch_Names) and [commit messages](https://wiki.phpbb.com/Git#Commit_Messages) are similar to phpBB3
-* Submit a [pull-request](https://github.com/blitze/phpBB-ext-sitemaker_category/pulls)
+* Submit a [pull-request](https://github.com/blitze/phpBB-ext-sitemaker_content_category/pulls)
 
 ## Testing
 

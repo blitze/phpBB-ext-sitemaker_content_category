@@ -1,0 +1,22 @@
+{% if field.FIELD_TYPE == 'category' %}
+<div class="field-settings">
+	<dl>
+		<dt><label for="{{ field.FIELD_NAME ~ '-group_id' }}">{{ lang('CATEGORY_GROUP') }}</label></dt>
+		<dd>
+			<select id="{{ field.FIELD_NAME ~ '-group_id' }}" name="field_props[{field.FIELD_NAME}][group_id]">
+			{%- for group in field.CATEGORY_GROUPS -%}
+				<option value="{{ group.id }}"{% if group.id == field.FIELD_PROPS.group_id %} selected="selected"{% endif %}>{{ group.name }}</option>
+			{%- endfor -%}
+			</select><br />
+			<label><input name="field_props[{field.FIELD_NAME}][multi_select]" type="checkbox" class="checkbox" value="1"{% if field.FIELD_PROPS.multi_select %} checked="checked"{% endif %} /> {{ lang('MULTI_SELECT') }}</label>
+		</dd>
+	</dl>
+	<dl>
+		<dt><label for="{{ field.FIELD_NAME ~ '-dropdown' }}">{{ lang('CATEGORY_FIELD_TYPE') }}</label></dt>
+		<dd>
+			<label><input name="field_props[{field.FIELD_NAME}][dropdown]" type="radio" class="radio" value="1"{% if field.FIELD_PROPS.dropdown %} checked="checked"{% endif %} /> {{ lang('CATEGORY_FIELD_DROPDOWN') }}</label>
+			<label><input name="field_props[{field.FIELD_NAME}][dropdown]" type="radio" class="radio" value="0"{% if field.FIELD_PROPS.dropdown != 1 %} checked="checked"{% endif %} /> {{ lang('CATEGORY_FIELD_FLAT') }}</label>
+		</dd>
+	</dl>
+</div>
+{% endif %}

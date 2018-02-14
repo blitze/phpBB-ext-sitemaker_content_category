@@ -1,0 +1,28 @@
+{% if loops.tree|length %}
+<nav>
+	<ul class="sm-list fa-ul">
+	{% for tree in loops.tree %}
+		{% if tree.THIS_DEPTH > tree.PREV_DEPTH %}
+			<ul class="sm-list fa-ul">
+		{% else %}
+		{% for close in tree.close %}
+			</ul>
+		</li>
+		{% endfor %}
+		{% endif %}
+		<li{% if tree.IS_CURRENT %} class="active"{% endif %}>
+			<a href="{{ tree.FULL_URL }}">
+				<i class="{{ tree.CAT_ICON }}fa-fw" aria-hidden="true"></i>{{ tree.CAT_NAME }}
+				{% if SHOW_COUNT %}<span class="info">{{ tree.ITEMS_COUNT }}</span>{% endif %}
+			</a>
+		{% if tree.NUM_KIDS == 0 %}
+		</li>
+		{% endif %}
+	{% endfor %}
+	    {% for close_tree in loops.close_tree %}
+	    	</ul>
+	    </li>
+	    {% endfor %}
+	</ul>
+</nav>
+{% endif %}

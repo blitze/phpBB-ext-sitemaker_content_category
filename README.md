@@ -2,7 +2,7 @@
 
 phpBB Sitemaker Content Categories is an Extension for [phpBB 3.2](https://www.phpbb.com/)
 
-[![Travis branch](https://img.shields.io/travis/blitze/phpBB-ext-sitemaker_category/master.svg?style=flat)](https://travis-ci.org/blitze/phpBB-ext-sitemaker_category) [![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/blitze/phpBB-ext-sitemaker_category/master.svg?style=flat)](https://scrutinizer-ci.com/g/blitze/phpBB-ext-sitemaker_category/?branch=master)
+[![Travis branch](https://img.shields.io/travis/blitze/phpBB-ext-sitemaker_content_category/master.svg?style=flat)](https://travis-ci.org/blitze/phpBB-ext-sitemaker_content_category) [![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/blitze/phpBB-ext-sitemaker_content_category/master.svg?style=flat)](https://scrutinizer-ci.com/g/blitze/phpBB-ext-sitemaker_content_category/?branch=master)
 
 ## Description
 

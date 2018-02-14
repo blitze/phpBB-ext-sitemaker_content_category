@@ -23,7 +23,7 @@
 		},
 		"version-check": {
 			"host": "www.phpbb.com",
-			"directory": "/customise/db/extension/sitemaker_category",
+			"directory": "/customise/db/extension/sitemaker_content_category",
 			"filename": "version_check"
 		}
 	}

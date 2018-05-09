@@ -48,15 +48,9 @@ class category extends \blitze\content\services\form\field\choice
 	}
 
 	/**
-	 * Display content field
-	 *
-	 * @param array $data
-	 * @param string $view_mode
-	 * @param array $topic_data
-	 * @param string $content_type
-	 * @return mixed
+	 * @inheritdoc
 	 */
-	public function display_field(array $data = array(), $view_mode = 'summary', array $topic_data = array(), $content_type = '')
+	public function display_field(array $data, array $topic_data, $view_mode)
 	{
 		$list = array();
 		$callable = 'get_category_url';
@@ -72,7 +66,7 @@ class category extends \blitze\content\services\form\field\choice
 		$categories = (array) $data['field_value'];
 		foreach ($categories as $category)
 		{
-			$u_cat = $this->$callable($category, $content_type);
+			$u_cat = $this->$callable($category, $data['content_type']);
 			$list[] = '<a href="' . $u_cat . '">' . $category . '</a>';
 		}
 

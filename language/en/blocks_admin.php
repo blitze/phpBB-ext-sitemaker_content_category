@@ -19,6 +19,7 @@ if (empty($lang) || !is_array($lang))
 
 $lang = array_merge($lang, array(
 	'CATEGORY'					=> 'Category',
+	'CATEGORY_ALL'				=> 'All',
 	'CATEGORY_MAX_DEPTH'		=> 'Max. Depth',
 	'CATEGORY_SHOW_COUNT'		=> 'Show count?',
 	'CATEGORY_GROUP'			=> 'Category Group',

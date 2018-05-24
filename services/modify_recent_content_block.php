@@ -76,12 +76,13 @@ class modify_recent_content_block extends \blitze\content\blocks\recent
 	 */
 	public function display(array $bdata, $edit_mode = false)
 	{
-		list($group_id, $this->cat_id) = preg_split('/-/', $bdata['settings']['category']);
+		$category = array_filter(preg_split('/-/', $bdata['settings']['category']));
 
 		$block = parent::display($bdata, $edit_mode);
 
-		if ($group_id && $this->cat_id)
+		if (sizeof($category))
 		{
+			list($group_id, $this->cat_id) = $category;
 			$block['title'] = $this->overwrite_block_title($group_id, $block['title']);
 		}
 
@@ -139,9 +140,11 @@ class modify_recent_content_block extends \blitze\content\blocks\recent
 	 */
 	public function select_category(array $categories, $type)
 	{
+		$this->language->add_lang('blocks_admin', 'blitze/category');
+
 		$groups = $this->categories->get_groups();
 
-		$html = '<option value="">' . $this->language->lang('ALL') . '</option>';
+		$html = '<option value="">' . $this->language->lang('CATEGORY_ALL') . '</option>';
 		foreach ($categories as $group_id => $items)
 		{
 			$grp_name = $groups[$group_id];

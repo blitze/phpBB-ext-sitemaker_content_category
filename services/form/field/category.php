@@ -17,6 +17,9 @@ class category extends \blitze\content\services\form\field\choice
 	/** @var \phpbb\controller\helper */
 	protected $helper;
 
+	/** @var \blitze\category\services\categories */
+	protected $categories;
+
 	/** @var \blitze\category\services\tree\display */
 	protected $tree;
 
@@ -34,15 +37,17 @@ class category extends \blitze\content\services\form\field\choice
 	 * @param \blitze\sitemaker\services\template		$ptemplate		Sitemaker template object
 	 * @param \phpbb\db\driver\driver_interface			$db				Database connection
 	 * @param \phpbb\controller\helper					$helper			Controller helper class
+	 * @param \blitze\category\services\categories		$categories		Categories object
 	 * @param \blitze\category\services\tree\display	$tree			Categories tree object
 	 * @param string									$data_table		Categories Data Table
 	 */
-	public function __construct(\phpbb\language\language $language, \phpbb\request\request_interface $request, \blitze\sitemaker\services\template $ptemplate, \phpbb\db\driver\driver_interface $db, \phpbb\controller\helper $helper, \blitze\category\services\tree\display $tree, $data_table)
+	public function __construct(\phpbb\language\language $language, \phpbb\request\request_interface $request, \blitze\sitemaker\services\template $ptemplate, \phpbb\db\driver\driver_interface $db, \phpbb\controller\helper $helper, \blitze\category\services\categories $categories, \blitze\category\services\tree\display $tree, $data_table)
 	{
 		parent::__construct($language, $request, $ptemplate);
 
 		$this->db = $db;
 		$this->helper = $helper;
+		$this->categories = $categories;
 		$this->tree = $tree;
 		$this->data_table = $data_table;
 	}
@@ -115,13 +120,7 @@ class category extends \blitze\content\services\form\field\choice
 			);
 		}
 
-	protected function delete_topic_cats()
-		$this->db->sql_query('DELETE FROM ' . $this->data_table . " WHERE field = '" . $this->db->sql_escape($field) . "' AND topic_id = " . (int) $topic_id);
-
-		if (sizeof($sql_ary))
-		{
-			$this->db->sql_multi_insert($this->data_table, $sql_ary);
-		}
+		$this->categories->set_topic_categories($topic_id, $field, $sql_ary);
 	}
 
 	/**

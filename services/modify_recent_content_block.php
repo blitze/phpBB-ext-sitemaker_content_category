@@ -56,7 +56,7 @@ class modify_recent_content_block extends \blitze\content\blocks\recent
 	public function get_config(array $settings)
 	{
 		$array = parent::get_config($settings);
-		$options = $this->categories->get_items();
+		$options = $this->categories->get_group_items();
 
 		// insert category config key after fields key
 		$config = array();
@@ -119,7 +119,7 @@ class modify_recent_content_block extends \blitze\content\blocks\recent
 	 */
 	protected function overwrite_block_title($group_id, $block_title)
 	{
-		$items = $this->categories->get_items($group_id);
+		$items = $this->categories->get_group_items($group_id);
 		if (isset($items[$this->cat_id]))
 		{
 			$cat_name = $items[$this->cat_id]['cat_name'];

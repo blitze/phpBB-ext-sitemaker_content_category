@@ -73,7 +73,7 @@ class categories extends \blitze\sitemaker\services\blocks\driver\block
 		$this->translator->add_lang('common', 'blitze/category');
 
 		$group_id = $bdata['settings']['group_id'];
-		$data = array('items' => $this->categories->get_items($group_id));
+		$data = array('items' => $this->categories->get_group_items($group_id));
 
 		if (!sizeof($data))
 		{

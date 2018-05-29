@@ -95,7 +95,7 @@ class listener implements EventSubscriberInterface
 
 		if (sizeof($category_fields) && sizeof($db_fields))
 		{
-			$categories = $this->get_topic_categories(array_keys($db_fields));
+			$categories = $this->categories->get_topic_categories(array_keys($db_fields));
 			
 			$this->set_uncategorized_items($db_fields, $category_fields, $categories);
 
@@ -115,7 +115,7 @@ class listener implements EventSubscriberInterface
 
 		if (sizeof($category_fields))
 		{
-			$categories = $this->get_topic_categories(array($event['topic_id']));
+			$categories = $this->categories->get_topic_categories(array($event['topic_id']));
 			$categories = (array) array_shift($categories);
 
 			$fields_data = (array) $event['fields_data'];
@@ -162,7 +162,7 @@ class listener implements EventSubscriberInterface
 	{
 		if ($event['post_mode'] === 'delete_topic' && !$event['is_soft'])
 		{
-			$this->db->sql_query('DELETE FROM ' . $this->categories_data_table . ' WHERE topic_id = ' . (int) $event['topic_id']);
+			 $this->categories->delete_topic_categories((int) $event['topic_id']);
 		}
 	}
 
@@ -183,31 +183,5 @@ class listener implements EventSubscriberInterface
 				$categories[$topic_id][$field] = $this->translator->lang('UNCATEGORIZED');
 			}
 		}
-	}
-
-	/**
-	 * @param array $topic_ids
-	 * @return array
-	 */
-	protected function get_topic_categories(array $topic_ids)
-	{
-		$result = $this->db->sql_query($this->db->sql_build_query('SELECT', array(
-			'SELECT'	=> 'd.cat_id, d.topic_id, d.field, c.cat_name',
-			'FROM'		=> array(
-				$this->categories_data_table	=> 'd',
-				$this->categories_table			=> 'c',
-			),
-			'WHERE'		=> 'c.cat_id = d.cat_id
-				AND ' . $this->db->sql_in_set('d.topic_id', array_map('intval', $topic_ids))
-		)));
-
-		$db_fields = array();
-		while ($row = $this->db->sql_fetchrow($result))
-		{
-			$db_fields[$row['topic_id']][$row['field']][$row['cat_id']] = $row['cat_name'];
-		}
-		$this->db->sql_freeresult($result);
-
-		return $db_fields;
 	}
 }

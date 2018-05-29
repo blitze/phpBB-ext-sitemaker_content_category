@@ -76,14 +76,16 @@ class modify_recent_content_block extends \blitze\content\blocks\recent
 	 */
 	public function display(array $bdata, $edit_mode = false)
 	{
-		$category = array_filter(preg_split('/-/', $bdata['settings']['category']));
-
 		$block = parent::display($bdata, $edit_mode);
 
-		if (sizeof($category))
+		if (($category = preg_split('/-/', $bdata['settings']['category'])) !== false)
 		{
-			list($group_id, $this->cat_id) = $category;
-			$block['title'] = $this->overwrite_block_title($group_id, $block['title']);
+			$category = array_filter($category);
+			if (sizeof($category))
+			{
+				list($group_id, $this->cat_id) = $category;
+				$block['title'] = $this->overwrite_block_title($group_id, $block['title']);
+			}
 		}
 
 		return $block;

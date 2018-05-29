@@ -62,7 +62,7 @@ class listener implements EventSubscriberInterface
 	 */
 	public function get_category_groups(\phpbb\event\data $event)
 	{
-		$field_data = $event['field_data'];
+		$field_data = (array) $event['field_data'];
 
 		// Get all category groups
 		$groups = $this->categories->get_groups();
@@ -85,11 +85,13 @@ class listener implements EventSubscriberInterface
 	 */
 	public function set_topics_categories(\phpbb\event\data $event)
 	{
-		$category_fields = array_keys($event['view_mode_fields'], 'category');
-		if (sizeof($category_fields) && sizeof($event['db_fields']))
+		$category_fields = array_keys((array) $event['view_mode_fields'], 'category');
+		$db_fields = (array) $event['db_fields'];
+
+		if (sizeof($category_fields) && sizeof($db_fields))
 		{
-			$categories = $this->get_topic_categories(array_keys($event['db_fields']));
-			$uncategorized = array_keys(array_diff_key($event['db_fields'], array_filter($categories)));
+			$categories = $this->get_topic_categories(array_keys($db_fields));
+			$uncategorized = array_keys(array_diff_key($db_fields, array_filter($categories)));
 
 			foreach ($uncategorized as $topic_id)
 			{
@@ -99,7 +101,7 @@ class listener implements EventSubscriberInterface
 				}
 			}
 
-			$event['db_fields'] = array_replace_recursive($event['db_fields'], $categories);
+			$event['db_fields'] = array_replace_recursive($db_fields, $categories);
 		}
 	}
 
@@ -109,13 +111,16 @@ class listener implements EventSubscriberInterface
 	 */
 	public function set_form_field_values(\phpbb\event\data $event)
 	{
-		$category_fields = array_keys($event['entity']->get_field_types(), 'category');
+		/** @var \blitze\content\model\entity\type $entity */
+		$entity = $event['entity'];
+		$category_fields = array_keys($entity->get_field_types(), 'category');
+
 		if (sizeof($category_fields))
 		{
 			$categories = $this->get_topic_categories(array($event['topic_id']));
 			$categories = (array) array_shift($categories);
 
-			$fields_data = $event['fields_data'];
+			$fields_data = (array) $event['fields_data'];
 			foreach ($categories as $field => $value)
 			{
 				$fields_data[$field]['field_value'] = array_keys($value);
@@ -133,7 +138,7 @@ class listener implements EventSubscriberInterface
 	{
 		if (isset($event['filters']['category']))
 		{
-			$sql_array = $event['sql_array'];
+			$sql_array = (array) $event['sql_array'];
 
 			$sql_array = array_merge_recursive($sql_array, array(
 				'FROM'	=> array(

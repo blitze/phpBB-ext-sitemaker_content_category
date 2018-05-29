@@ -1,4 +1,5 @@
 <?php
+
 /**
  *
  * @package sitemaker
@@ -10,12 +11,15 @@
 namespace blitze\category\blocks;
 
 /**
-* Categories Block
-*/
+ * Categories Block
+ */
 class categories extends \blitze\sitemaker\services\blocks\driver\block
 {
 	/** @var \phpbb\language\language */
 	protected $translator;
+
+	/** @var \blitze\category\services\categories */
+	protected $categories;
 
 	/** @var \blitze\category\model\mapper_factory */
 	protected $mapper_factory;
@@ -51,10 +55,10 @@ class categories extends \blitze\sitemaker\services\blocks\driver\block
 		$depth_options = $this->get_depth_options();
 
 		return array(
-			'legend1'       => 'SETTINGS',
-			'group_id'		=> array('lang' => 'CATEGORY_GROUP', 'validate' => 'int', 'type' => 'select', 'options' => $category_groups, 'default' => key($category_groups)),
-			'max_depth'		=> array('lang' => 'CATEGORY_MAX_DEPTH', 'validate' => 'int', 'type' => 'select', 'options' => $depth_options, 'default' => 3),
-			'show_count'	=> array('lang' => 'CATEGORY_SHOW_COUNT', 'validate' => 'bool', 'type' => 'radio:yes_no', 'explain' => false, 'default' => 1),
+			'legend1' => 'SETTINGS',
+			'group_id' => array('lang' => 'CATEGORY_GROUP', 'validate' => 'int', 'type' => 'select', 'options' => $category_groups, 'default' => key($category_groups)),
+			'max_depth' => array('lang' => 'CATEGORY_MAX_DEPTH', 'validate' => 'int', 'type' => 'select', 'options' => $depth_options, 'default' => 3),
+			'show_count' => array('lang' => 'CATEGORY_SHOW_COUNT', 'validate' => 'bool', 'type' => 'radio:yes_no', 'explain' => false, 'default' => 1),
 		);
 	}
 
@@ -70,12 +74,11 @@ class categories extends \blitze\sitemaker\services\blocks\driver\block
 
 		$data = array('items' => $this->categories->get_items($group_id));
 
-		if (!sizeof($data))
-		{
+		if (!sizeof($data)) {
 			return array(
-				'title'		=> $title,
-				'content'	=> $this->get_message($group_id, $editing),
-				'status'	=> (int) !$editing,
+				'title' => $title,
+				'content' => $this->get_message($group_id, $editing),
+				'status' => (int)!$editing,
 			);
 		}
 
@@ -83,8 +86,8 @@ class categories extends \blitze\sitemaker\services\blocks\driver\block
 		$this->tree->display_navlist($data, $this->ptemplate, 'tree');
 
 		return array(
-			'title'     => $title,
-			'content'   => $this->ptemplate->render_view('blitze/category', 'blocks/categories.html', 'categories_block'),
+			'title' => $title,
+			'content' => $this->ptemplate->render_view('blitze/category', 'blocks/categories.html', 'categories_block'),
 		);
 	}
 
@@ -96,8 +99,7 @@ class categories extends \blitze\sitemaker\services\blocks\driver\block
 	protected function get_message($group_id, $editing)
 	{
 		$msg_key = '';
-		if ($editing)
-		{
+		if ($editing) {
 			$msg_key = $this->translator->lang(($group_id) ? 'CATEGORY_GROUP_NO_ITEMS' : 'SELECT_CATEGORY_GROUP');
 		}
 
@@ -110,8 +112,7 @@ class categories extends \blitze\sitemaker\services\blocks\driver\block
 	protected function get_depth_options()
 	{
 		$options = array();
-		for ($i = 3; $i < 10; $i++)
-		{
+		for ($i = 3; $i < 10; $i++) {
 			$options[$i] = $i;
 		}
 

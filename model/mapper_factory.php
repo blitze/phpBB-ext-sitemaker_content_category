@@ -19,17 +19,21 @@ class mapper_factory implements mapper_factory_interface
 	/** @var \phpbb\db\driver\driver_interface */
 	protected $db;
 
+	/** @var \blitze\sitemaker\services\forum\data */
+	protected $forum;
+
 	/** @var array */
 	public $mapper_tables;
 
 	/**
 	 * Constructor
 	 *
-	 * @param \phpbb\config\config					$config		Config object
-	 * @param \phpbb\db\driver\driver_interface		$db			Database object
-	 * @param array									$tables		Tables for data mapping
+	 * @param \phpbb\config\config						$config		Config object
+	 * @param \phpbb\db\driver\driver_interface			$db			Database object
+	 * @param \blitze\sitemaker\services\forum\data		$forum		Sitemaker forum data
+	 * @param array										$tables		Tables for data mapping
 	 */
-	public function __construct(\phpbb\config\config $config, \phpbb\db\driver\driver_interface $db, $forum, array $tables)
+	public function __construct(\phpbb\config\config $config, \phpbb\db\driver\driver_interface $db, \blitze\sitemaker\services\forum\data $forum, array $tables)
 	{
 		$this->config = $config;
 		$this->db = $db;

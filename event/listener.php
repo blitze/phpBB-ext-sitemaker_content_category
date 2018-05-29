@@ -16,6 +16,9 @@ class listener implements EventSubscriberInterface
 	/** @var \phpbb\db\driver\driver_interface */
 	protected $db;
 
+	/** @var \phpbb\language\language */
+	protected $translator;
+
 	/** @var \blitze\category\services\categories */
 	protected $categories;
 
@@ -29,13 +32,15 @@ class listener implements EventSubscriberInterface
 	 * Constructor
 	 *
 	 * @param \phpbb\db\driver\driver_interface			$db						Database connection
+	 * @param \phpbb\language\language					$translator				Language object
 	 * @param \blitze\category\services\categories		$categories				Categories object
 	 * @param string									$categories_table		Categories Table
 	 * @param string									$categories_data_table	Categories Data Table
 	 */
-	public function __construct(\phpbb\db\driver\driver_interface $db, \blitze\category\services\categories $categories, $categories_table, $categories_data_table)
+	public function __construct(\phpbb\db\driver\driver_interface $db, \phpbb\language\language $translator, \blitze\category\services\categories $categories, $categories_table, $categories_data_table)
 	{
 		$this->db = $db;
+		$this->translator = $translator;
 		$this->categories = $categories;
 		$this->categories_table = $categories_table;
 		$this->categories_data_table = $categories_data_table;
@@ -97,7 +102,7 @@ class listener implements EventSubscriberInterface
 			{
 				foreach ($category_fields as $field)
 				{
-					$categories[$topic_id][$field] = 'Uncategorized';
+					$categories[$topic_id][$field] = $this->translator->lang('UNCATEGORIZED');
 				}
 			}
 

@@ -74,11 +74,12 @@ class categories extends \blitze\sitemaker\services\blocks\driver\block
 
 		$data = array('items' => $this->categories->get_items($group_id));
 
-		if (!sizeof($data)) {
+		if (!sizeof($data))
+		{
 			return array(
 				'title' => $title,
 				'content' => $this->get_message($group_id, $editing),
-				'status' => (int)!$editing,
+				'status' => !$editing,
 			);
 		}
 
@@ -99,7 +100,8 @@ class categories extends \blitze\sitemaker\services\blocks\driver\block
 	protected function get_message($group_id, $editing)
 	{
 		$msg_key = '';
-		if ($editing) {
+		if ($editing)
+		{
 			$msg_key = $this->translator->lang(($group_id) ? 'CATEGORY_GROUP_NO_ITEMS' : 'SELECT_CATEGORY_GROUP');
 		}
 
@@ -112,7 +114,8 @@ class categories extends \blitze\sitemaker\services\blocks\driver\block
 	protected function get_depth_options()
 	{
 		$options = array();
-		for ($i = 3; $i < 10; $i++) {
+		for ($i = 3; $i < 10; $i++)
+		{
 			$options[$i] = $i;
 		}
 

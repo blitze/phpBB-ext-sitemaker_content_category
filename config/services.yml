@@ -51,6 +51,7 @@ services:
         class: blitze\category\event\listener
         arguments:
             - '@dbal.conn'
+            - '@language'
             - '@blitze.category.categories'
             - '%tables.blitze.category.items%'
             - '%tables.blitze.category.data%'

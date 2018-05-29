@@ -33,7 +33,7 @@ class category extends \blitze\content\services\form\field\choice
 	 * @param \phpbb\request\request_interface			$request		Request object
 	 * @param \blitze\sitemaker\services\template		$ptemplate		Sitemaker template object
 	 * @param \phpbb\db\driver\driver_interface			$db				Database connection
-	 * @param \\phpbb\controller\helper					$helper			Controller helper class
+	 * @param \phpbb\controller\helper					$helper			Controller helper class
 	 * @param \blitze\category\services\tree\display	$tree			Categories tree object
 	 * @param string									$data_table		Categories Data Table
 	 */
@@ -78,14 +78,7 @@ class category extends \blitze\content\services\form\field\choice
 	 */
 	public function show_form_field($name, array &$data, $forum_id = 0, $topic_id = 0)
 	{
-		$grp_items	= $this->tree->get_tree_data(0, 0, array(
-			'WHERE'	=> array('i.group_id = ' . (int) $data['field_props']['group_id'])
-		));
-
-		foreach ($grp_items as $row)
-		{
-			$this->cats[$row['cat_id']] = $row['cat_name'];
-		}
+		$grp_items = $this->get_group_items($data['field_props']['group_id']);
 
 		if ($data['field_props']['dropdown'])
 		{
@@ -105,32 +98,48 @@ class category extends \blitze\content\services\form\field\choice
 	/**
 	 * @inheritdoc
 	 */
-	public function save_field($value, array $field_data, array $topic_data)
+	public function save_field($field_value, array $field_data, array $topic_data)
 	{
 		$field = $field_data['field_name'];
-		$topic_id = $topic_data['topic_id'];
-		$this->db->sql_query('DELETE FROM ' . $this->data_table . " WHERE field = '" . $this->db->sql_escape($field) . "' AND topic_id = " . (int) $topic_id);
-
-		// because we chose to extend choice, which can have single value items (string) or multiple items (array),
-		// the value received from $categories above can be string/array.
-		// We need to make sure it is an array
-		$categories = array_filter((array) $value);
+		$topic_id = (int) $topic_data['topic_id'];
+		$categories = array_filter((array) $field_value);
 
 		$sql_ary = array();
 		foreach ($categories as $cat_id)
 		{
 			$sql_ary[] = array(
-				'cat_id'		=> $cat_id,
+				'cat_id'		=> (int) $cat_id,
 				'topic_id'		=> $topic_id,
 				'topic_time'	=> $topic_data['topic_time'],
 				'field'			=> $field,
 			);
 		}
 
+	protected function delete_topic_cats()
+		$this->db->sql_query('DELETE FROM ' . $this->data_table . " WHERE field = '" . $this->db->sql_escape($field) . "' AND topic_id = " . (int) $topic_id);
+
 		if (sizeof($sql_ary))
 		{
 			$this->db->sql_multi_insert($this->data_table, $sql_ary);
 		}
+	}
+
+	/**
+	 * @param int $group_id
+	 * @return array
+	 */
+	protected function get_group_items($group_id)
+	{
+		$grp_items	= $this->tree->get_tree_data(0, 0, array(
+			'WHERE'	=> array('i.group_id = ' . (int) $group_id)
+		));
+
+		foreach ($grp_items as $row)
+		{
+			$this->cats[$row['cat_id']] = $row['cat_name'];
+		}
+
+		return $grp_items;
 	}
 
 	/**

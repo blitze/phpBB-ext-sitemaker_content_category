@@ -102,18 +102,7 @@ class items extends base_mapper
 	 */
 	public function find_all($group_id = 0)
 	{
-		$sql_custom = array(
-			'SELECT'	=> array('c.*, count(d.topic_id) as items_count'),
-			'FROM'		=> array(
-				$this->items_table	=> 'c',
-				$this->data_table	=> 'd'
-			),
-			'WHERE'		=> 'c.cat_id = d.cat_id
-				AND t.topic_id = d.topic_id' .
-				(($group_id) ? ' AND c.group_id = ' . (int) $group_id : ''),
-			'GROUP_BY'	=> 'd.cat_id',
-			'ORDER_BY'	=> 'c.group_id, c.left_id ASC'
-		);
+		$sql_custom = $this->get_find_all_sql($group_id);
 
 		$sql_array = $this->forum->query(false, false)
 			->fetch_custom($sql_custom, array('SELECT'))
@@ -197,6 +186,26 @@ class items extends base_mapper
 	public function create_entity(array $row)
 	{
 		return new $this->entity_class($row);
+	}
+
+	/**
+	 * @param int $group_id
+	 * @return array
+	 */
+	protected function get_find_all_sql($group_id)
+	{
+		return array(
+			'SELECT'	=> array('c.*, count(d.topic_id) as items_count'),
+			'FROM'		=> array(
+				$this->items_table	=> 'c',
+				$this->data_table	=> 'd'
+			),
+			'WHERE'		=> 'c.cat_id = d.cat_id
+				AND t.topic_id = d.topic_id' .
+				(($group_id) ? ' AND c.group_id = ' . (int) $group_id : ''),
+			'GROUP_BY'	=> 'd.cat_id',
+			'ORDER_BY'	=> 'c.group_id, c.left_id ASC'
+		);
 	}
 
 	/**

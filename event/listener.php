@@ -96,15 +96,8 @@ class listener implements EventSubscriberInterface
 		if (sizeof($category_fields) && sizeof($db_fields))
 		{
 			$categories = $this->get_topic_categories(array_keys($db_fields));
-			$uncategorized = array_keys(array_diff_key($db_fields, array_filter($categories)));
-
-			foreach ($uncategorized as $topic_id)
-			{
-				foreach ($category_fields as $field)
-				{
-					$categories[$topic_id][$field] = $this->translator->lang('UNCATEGORIZED');
-				}
-			}
+			
+			$this->set_uncategorized_items($db_fields, $category_fields, $categories);
 
 			$event['db_fields'] = array_replace_recursive($db_fields, $categories);
 		}
@@ -170,6 +163,25 @@ class listener implements EventSubscriberInterface
 		if ($event['post_mode'] === 'delete_topic' && !$event['is_soft'])
 		{
 			$this->db->sql_query('DELETE FROM ' . $this->categories_data_table . ' WHERE topic_id = ' . (int) $event['topic_id']);
+		}
+	}
+
+	/**
+	 * @param array $db_fields
+	 * @param array $category_fields
+	 * @param array $categories
+	 * @return void
+	 */
+	protected function set_uncategorized_items(array $db_fields, array $category_fields, array &$categories)
+	{
+		$uncategorized = array_keys(array_diff_key($db_fields, array_filter($categories)));
+
+		foreach ($uncategorized as $topic_id)
+		{
+			foreach ($category_fields as $field)
+			{
+				$categories[$topic_id][$field] = $this->translator->lang('UNCATEGORIZED');
+			}
 		}
 	}
 

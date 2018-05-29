@@ -30,6 +30,9 @@ class categories extends \blitze\sitemaker\services\blocks\driver\block
 	/** @var string */
 	protected $data_table;
 
+	/** @var string */
+	protected $title = 'CATEGORIES';
+
 	/**
 	 * Constructor
 	 *
@@ -69,17 +72,15 @@ class categories extends \blitze\sitemaker\services\blocks\driver\block
 	{
 		$this->translator->add_lang('common', 'blitze/category');
 
-		$title = 'CATEGORIES';
 		$group_id = $bdata['settings']['group_id'];
-
 		$data = array('items' => $this->categories->get_items($group_id));
 
 		if (!sizeof($data))
 		{
 			return array(
-				'title' => $title,
-				'content' => $this->get_message($group_id, $editing),
-				'status' => !$editing,
+				'title'		=> $this->block_title,
+				'content'	=> $this->get_message($group_id, $editing),
+				'status'	=> !$editing,
 			);
 		}
 
@@ -87,8 +88,8 @@ class categories extends \blitze\sitemaker\services\blocks\driver\block
 		$this->tree->display_navlist($data, $this->ptemplate, 'tree');
 
 		return array(
-			'title' => $title,
-			'content' => $this->ptemplate->render_view('blitze/category', 'blocks/categories.html', 'categories_block'),
+			'title'		=> $this->block_title,
+			'content'	=> $this->ptemplate->render_view('blitze/category', 'blocks/categories.html', 'categories_block'),
 		);
 	}
 

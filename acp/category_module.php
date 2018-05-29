@@ -75,13 +75,7 @@ class category_module
 		$group_id = $this->request->variable('group', 0);
 
 		$this->set_group_options($group_id);
-
-		nestedset::load_scripts($this->util);
-
-		$this->util->add_assets(array(
-			'js'	=> array('@blitze_category/assets/admin.min.js'),
-			'css'	=> array('@blitze_category/assets/admin.min.css'),
-		));
+		$this->load_assets();
 
 		$this->template->assign_vars(array(
 			'S_GROUPS'		=> true,
@@ -97,30 +91,40 @@ class category_module
 	}
 
 	/**
-	 * @param int $group_id
+	 * @param int $current_group_id
 	 * @return void
 	 */
-	protected function set_group_options(&$group_id)
+	protected function set_group_options(&$current_group_id)
 	{
 		$group_mapper = $this->mapper_factory->create('groups');
 
 		// Get all category groups
 		$collection = $group_mapper->find();
 
-		if ($collection->valid())
-		{
-			$cat_group = (isset($collection[$group_id])) ? $collection[$group_id] : $collection->current();
-			$group_id = $cat_group->get_group_id();
+		$entity = (isset($collection[$group_id])) ? $collection[$group_id] : $collection->current();
+		$current_group_id = $entity->get_group_id();
 
-			foreach ($collection as $entity)
-			{
-				$id = $entity->get_group_id();
-				$this->template->assign_block_vars('group', array(
-					'ID'		=> $id,
-					'NAME'		=> $entity->get_group_name(),
-					'S_ACTIVE'	=> ($id == $group_id) ? true : false,
-				));
-			}
+		foreach ($collection as $entity)
+		{
+			$group_id = $entity->get_group_id();
+			$this->template->assign_block_vars('group', array(
+				'ID'		=> $group_id,
+				'NAME'		=> $entity->get_group_name(),
+				'S_ACTIVE'	=> ($current_group_id == $group_id) ? true : false,
+			));
 		}
+	}
+
+	/**
+	 * @return void
+	 */
+	protected function load_assets()
+	{
+		nestedset::load_scripts($this->util);
+
+		$this->util->add_assets(array(
+			'js'	=> array('@blitze_category/assets/admin.min.js'),
+			'css'	=> array('@blitze_category/assets/admin.min.css'),
+		));
 	}
 }

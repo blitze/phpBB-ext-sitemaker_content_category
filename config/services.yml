@@ -45,6 +45,7 @@ services:
     blitze.category.admin.controller:
         class: blitze\category\controller\admin
         arguments:
+            - '@auth'
             - '@request'
             - '@language'
             - '@blitze.category.action_handler'

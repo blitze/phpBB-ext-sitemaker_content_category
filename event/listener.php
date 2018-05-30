@@ -96,7 +96,7 @@ class listener implements EventSubscriberInterface
 		if (sizeof($category_fields) && sizeof($db_fields))
 		{
 			$categories = $this->categories->get_topic_categories(array_keys($db_fields));
-			
+
 			$this->set_uncategorized_items($db_fields, $category_fields, $categories);
 
 			$event['db_fields'] = array_replace_recursive($db_fields, $categories);

@@ -58,6 +58,17 @@ class admin
 			return redirect(generate_board_url(), $this->return_url);
 		}
 
+		$this->execute_action($return_data);
+
+		return new JsonResponse($return_data);
+	}
+
+	/**
+	 * @param array $return_data
+	 * @return void
+	 */
+	protected function execute_action(array &$return_data)
+	{
 		try
 		{
 			$command = $this->action_handler->create($action);
@@ -73,7 +84,5 @@ class admin
 		{
 			$return_data['message'] = $this->translator->lang($e->getMessage());
 		}
-
-		return new JsonResponse($return_data);
 	}
 }

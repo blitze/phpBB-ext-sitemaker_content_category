@@ -58,16 +58,17 @@ class admin
 			return redirect(generate_board_url(), $this->return_url);
 		}
 
-		$this->execute_action($return_data);
+		$this->execute_action($action, $return_data);
 
 		return new JsonResponse($return_data);
 	}
 
 	/**
+	 * @param string $action
 	 * @param array $return_data
 	 * @return void
 	 */
-	protected function execute_action(array &$return_data)
+	protected function execute_action($action, array &$return_data)
 	{
 		try
 		{

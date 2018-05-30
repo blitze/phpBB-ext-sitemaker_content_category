@@ -101,7 +101,8 @@ class category_module
 		// Get all category groups
 		$collection = $group_mapper->find();
 
-		$entity = (isset($collection[$group_id])) ? $collection[$group_id] : $collection->current();
+		/** @var \blitze\category\model\entity\group $entity */
+		$entity = (isset($collection[$current_group_id])) ? $collection[$current_group_id] : $collection->current();
 		$current_group_id = $entity->get_group_id();
 
 		foreach ($collection as $entity)

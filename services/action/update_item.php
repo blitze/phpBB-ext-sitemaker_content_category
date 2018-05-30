@@ -23,7 +23,8 @@ class update_item extends base_action
 			'cat_name'		=> $this->request->variable('cat_name', '', true),
 		);
 
-		$entity = $this->get_entity();
+		$item_mapper = $this->mapper_factory->create('items');
+		$entity = $this->get_entity($cat_id, $item_mapper);
 
 		if (isset($allowed_fields[$field]))
 		{
@@ -37,13 +38,12 @@ class update_item extends base_action
 
 	/**
 	 * @param int $cat_id
+	 * @param \blitze\category\model\mapper\items $item_mapper
 	 * @return \blitze\category\model\entity\item
 	 * @throws \blitze\sitemaker\exception\out_of_bounds
 	 */
-	protected function get_entity($cat_id)
+	protected function get_entity($cat_id, \blitze\category\model\mapper\items $item_mapper)
 	{
-		$item_mapper = $this->mapper_factory->create('items');
-
 		if (($entity = $item_mapper->load(array('cat_id', '=', $cat_id))) === null)
 		{
 			throw new \blitze\sitemaker\exception\out_of_bounds('cat_id');

@@ -31,7 +31,7 @@ class categories extends \blitze\sitemaker\services\blocks\driver\block
 	protected $data_table;
 
 	/** @var string */
-	protected $title = 'CATEGORIES';
+	protected $block_title = 'CATEGORIES';
 
 	/**
 	 * Constructor

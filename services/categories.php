@@ -65,7 +65,7 @@ class categories
 	public function get_group_items($group_id = 0)
 	{
 		$item_mapper = $this->mapper_factory->create('items');
-		$collection = $item_mapper->find_all($group_id);
+		$collection = ($group_id) ? $item_mapper->find_all($group_id) : $item_mapper->find();
 
 		$data = array();
 		foreach ($collection as $entity)

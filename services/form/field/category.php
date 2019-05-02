@@ -115,7 +115,6 @@ class category extends \blitze\content\services\form\field\choice
 			$sql_ary[] = array(
 				'cat_id'		=> (int) $cat_id,
 				'topic_id'		=> $topic_id,
-				'topic_time'	=> $topic_data['topic_time'],
 				'field'			=> $field,
 			);
 		}

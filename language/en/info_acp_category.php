@@ -37,44 +37,20 @@ if (empty($lang) || !is_array($lang))
 //
 
 $lang = array_merge($lang, array(
-	'ADD_BULK_EXPLAIN'					=> 'Add multiple category items at once.<br /> - Place each item on a separate line<br /> - Use the <strong>Tab</strong> key to indent items to represent parent-child relationships',
-	'ADD_BULK_ITEMS'					=> 'Bulk Add Category Items',
+	'ADD_BULK_CATEGORIES'				=> 'Bulk Add Category Items',
+	'ADD_BULK_CATEGORIES_EXPLAIN'		=> 'Add multiple category items at once.<br /> - Place each item on a separate line<br /> - Use the <strong>Tab</strong> key to indent items to represent parent-child relationships',
 	'ACP_CATEGORY'						=> 'Categories',
 	'ACP_CATEGORY_MANAGEMENT'			=> 'Category Management',
 	'ACP_CATEGORY_MANAGEMENT_EXPLAIN'	=> 'Here you can create and manage categories for your site',
-	'ADD_GROUP'							=> 'Add Category Group',
+	'ADD_CATEGORY_GROUP'				=> 'Add Category Group',
 	'ADD_CATEGORY'						=> 'Add Category',
-	'ADD_ITEM'							=> 'Add New Item',
-	'AJAX_PROCESSING'					=> 'Working',
 
-	'CATEGORIES'				=> 'Categories',
-	'CHANGE_ME'					=> 'Change Me',
+	'CATEGORIES'						=> 'Categories',
 
-	'DELETE_ITEM'				=> 'Delete Item',
-	'DELETE_KIDS'				=> 'Delete Branch',
-	'DELETE_GROUP'				=> 'Delete Group',
-	'DELETE_GROUP_CONFIRM'		=> 'Are you sure you want to delete this group?<br />This will delete the group and all its items',
-	'DELETE_ITEM'				=> 'Delete Item',
-	'DELETE_ITEM_CONFIRM'		=> 'Are you sure you want to delete the selected items?',
-	'DELETE_SELECTED'			=> 'Delete Selected',
+	'DELETE_CATEGORY_GROUP'				=> 'Delete Category Group',
+	'DELETE_CATEGORY_GROUP_CONFIRM'		=> 'Are you sure you want to delete this category group?<br />This will delete the group and all its items',
+	'DELETE_CATEGORY'					=> 'Delete Category',
+	'DELETE_CATEGORY_CONFIRM'			=> 'Are you sure you want to delete this category?',
 
-	'EDIT_ITEM'					=> 'Edit Item',
-
-	'GROUP_ITEMS'				=> 'Group Items',
-
-	'ITEM_TITLE'				=> 'Item Title',
-	'ITEM_PARENT'				=> 'Parent Item',
-
-	'NO_ITEMS'					=> 'No items have been created',
-	'NO_PARENT'					=> 'No Parent',
-
-	'REBUILD_TREE'				=> 'Rebuild Tree',
-	'REQUIRED'					=> 'Required',
-	'REQUIRED_FIELDS'			=> '* Required fields',
-
-	'SAVE_CHANGES'				=> 'Save Changes',
-	'SAVE'						=> 'Save',
-	'SELECT_ALL'				=> 'Select All',
-
-	'UNSAVED_CHANGES'			=> 'You have unsaved changes',
+	'NO_CATEGORIES'						=> 'No categories have been created',
 ));

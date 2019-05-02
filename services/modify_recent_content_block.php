@@ -76,17 +76,17 @@ class modify_recent_content_block extends \blitze\content\blocks\recent
 	 */
 	public function display(array $bdata, $edit_mode = false)
 	{
-		$block = parent::display($bdata, $edit_mode);
-
 		if (($category = preg_split('/-/', $bdata['settings']['category'])) !== false)
 		{
 			$category = array_filter($category);
 			if (sizeof($category))
 			{
 				list($group_id, $this->cat_id) = $category;
-				$block['title'] = $this->overwrite_block_title($group_id, $block['title']);
 			}
 		}
+
+		$block = parent::display($bdata, $edit_mode);
+		$block['title'] = $this->overwrite_block_title($group_id, $block['title']);
 
 		return $block;
 	}
@@ -119,10 +119,11 @@ class modify_recent_content_block extends \blitze\content\blocks\recent
 	 */
 	protected function overwrite_block_title($group_id, $block_title)
 	{
-		$items = $this->categories->get_group_items($group_id);
-		if (isset($items[$this->cat_id]))
+		$items = $this->categories->get_group_items();
+
+		if (isset($items[$group_id][$this->cat_id]))
 		{
-			$cat_name = $items[$this->cat_id]['cat_name'];
+			$cat_name = $items[$group_id][$this->cat_id]['cat_name'];
 			$url = $this->helper->route('blitze_content_filter', array(
 				'filter_type'	=> 'category',
 				'filter_value'	=> urlencode($cat_name),
@@ -155,7 +156,8 @@ class modify_recent_content_block extends \blitze\content\blocks\recent
 			{
 				$value = $row['group_id'] . '-' . $cat_id;
 				$selected = ($type == $value) ? ' selected="selected"' : '';
-				$html .= '<option value="' . $value . '"' . $selected . '">' . $row['cat_name'] . '</option>';
+				$indentation = str_repeat('&nbsp;', $row['depth'] * 4);
+				$html .= '<option value="' . $value . '"' . $selected . '">' . $indentation . $row['cat_name'] . '</option>';
 			}
 			$html .= '</optgroup>';
 		}

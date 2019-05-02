@@ -31,14 +31,11 @@ class category_module
 	/** @var \blitze\sitemaker\model\mapper_factory */
 	protected $mapper_factory;
 
-	/** @var \blitze\sitemaker\services\util */
-	protected $util;
+	/** @var \phpbb\user */
+	protected $user;
 
 	/** @var string phpBB root path */
 	protected $phpbb_root_path;
-
-	/** @var string phpEx */
-	protected $php_ext;
 
 	/** @var string */
 	public $tpl_name;
@@ -54,17 +51,16 @@ class category_module
 	 */
 	public function __construct()
 	{
-		global $phpbb_container, $request, $template, $phpbb_root_path, $phpEx;
+		global $phpbb_container, $request, $template, $user, $phpbb_root_path;
 
 		$this->request = $request;
 		$this->template = $template;
+		$this->user = $user;
 		$this->phpbb_root_path = $phpbb_root_path;
-		$this->php_ext = $phpEx;
 
 		$this->controller_helper = $phpbb_container->get('controller.helper');
 		$this->mapper_factory = $phpbb_container->get('blitze.category.mapper.factory');
 		$this->icon = $phpbb_container->get('blitze.sitemaker.icon_picker');
-		$this->util = $phpbb_container->get('blitze.sitemaker.util');
 	}
 
 	/**
@@ -75,14 +71,13 @@ class category_module
 		$group_id = $this->request->variable('group', 0);
 
 		$this->set_group_options($group_id);
-		$this->load_assets();
 
 		$this->template->assign_vars(array(
 			'S_GROUPS'		=> true,
 			'GROUP_ID'		=> $group_id,
 			'ICON_PICKER'	=> $this->icon->picker(),
+			'SCRIPT_PATH'	=> $this->user->page['root_script_path'],
 			'T_PATH'		=> $this->phpbb_root_path,
-			'UA_GROUP_ID'	=> $group_id,
 			'UA_AJAX_URL'   => $this->controller_helper->route('blitze_category_admin', array(), true, '') . '/',
 		));
 
@@ -101,31 +96,21 @@ class category_module
 		// Get all category groups
 		$collection = $group_mapper->find();
 
-		/** @var \blitze\category\model\entity\group $entity */
-		$entity = (isset($collection[$current_group_id])) ? $collection[$current_group_id] : $collection->current();
-		$current_group_id = $entity->get_group_id();
-
-		foreach ($collection as $entity)
+		if ($collection->valid())
 		{
-			$group_id = $entity->get_group_id();
-			$this->template->assign_block_vars('group', array(
-				'ID'		=> $group_id,
-				'NAME'		=> $entity->get_group_name(),
-				'S_ACTIVE'	=> ($current_group_id == $group_id) ? true : false,
-			));
+			/** @var \blitze\category\model\entity\group $entity */
+			$entity = (isset($collection[$current_group_id])) ? $collection[$current_group_id] : $collection->current();
+			$current_group_id = $entity->get_group_id();
+
+			foreach ($collection as $entity)
+			{
+				$group_id = $entity->get_group_id();
+				$this->template->assign_block_vars('groups', array(
+					'ID'		=> $group_id,
+					'NAME'		=> $entity->get_group_name(),
+					'S_ACTIVE'	=> ($current_group_id == $group_id) ? true : false,
+				));
+			}
 		}
-	}
-
-	/**
-	 * @return void
-	 */
-	protected function load_assets()
-	{
-		nestedset::load_scripts($this->util);
-
-		$this->util->add_assets(array(
-			'js'	=> array('@blitze_category/assets/admin.min.js'),
-			'css'	=> array('@blitze_category/assets/admin.min.css'),
-		));
 	}
 }

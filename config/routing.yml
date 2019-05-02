@@ -1,8 +1,8 @@
 blitze_category_admin:
-    path: category/admin/{action}
+    path: sitemaker/category/admin/{action}
     defaults: { _controller: blitze.category.admin.controller:handle, action: '', _format: json }
     requirements:
         _format: json
 blitze_category_items:
-    path: /category/{category}
+    path: category/{category}
     defaults: { _controller: blitze.category.items.controller:index }

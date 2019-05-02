@@ -1,128 +1,43 @@
 <!-- INCLUDE overall_header.html -->
 
+{% INCLUDECSS '@blitze_sitemaker/assets/tree/group.min.css' %}
+
+{% INCLUDEJS '@blitze_sitemaker/assets/runtime.min.js' %}
+{% INCLUDEJS '@blitze_sitemaker/assets/tree/group.min.js' %}
+{% INCLUDEJS '@blitze_category/assets/admin.js' %}
+
 <a id="maincontent"></a>
 
 <h1>{L_ACP_CATEGORY_MANAGEMENT}</h1>
 
 <p>{L_ACP_CATEGORY_MANAGEMENT_EXPLAIN}</p>
 
-<p>&nbsp;</p>
+{%- set ADD_GROUP = 'ADD_CATEGORY_GROUP' -%}
+{%- set ADD_GROUP_ITEM = 'ADD_CATEGORY' -%}
+{%- set ADD_BULK_ITEMS = 'ADD_BULK_CATEGORIES' -%}
+{%- set ADD_BULK_ITEMS_EXPLAIN = 'ADD_BULK_CATEGORIES_EXPLAIN' -%}
+{%- set DELETE_GROUP = 'DELETE_CATEGORY_GROUP' -%}
+{%- set DELETE_GROUP_CONFIRM = 'DELETE_CATEGORY_GROUP_CONFIRM' -%}
+{%- set DELETE_GROUP_ITEM = 'DELETE_CATEGORY' -%}
+{%- set DELETE_GROUP_ITEM_CONFIRM = 'DELETE_CATEGORY_CONFIRM' -%}
+{%- set GROUP_ITEMS = 'CATEGORIES' -%}
+{%- set NO_ITEMS = 'NO_CATEGORIES' -%}
 
-<div class="grid grid--no-gutter">
-	<div class="grid__col grid__col--1-of-5">
-		<div class="groups-container">
-			<button id="add-group">{L_ADD_GROUP}</button>
-			<ul id="sm-groups" class="groups-list">
-				<!-- BEGIN group -->
-				<li id="group-{group.ID}"<!-- IF group.S_ACTIVE --> class="row3 current-group"<!-- ENDIF -->>
-				<a href="#" class="group-option"><span class="group-editable">{group.NAME}</span></a>
-				<div class="group-actions">
-					<a href="#" class="group-edit left" title="{L_EDIT}"><i class="fa fa-cog"></i></a>
-					<a href="#" class="group-delete left" title="{L_DELETE}"><i class="fa fa-close"></i></a>
-				</div>
-				</li>
-			<!-- END group -->
-			</ul>
-	</div>
-</div>
-<div class="grid__col grid__col--4-of-5">
+{% include('@blitze_sitemaker/tree_builder.html') %}
 
-	<div id="nested-tree" style="display: none;">
-
-		<div id="loading" class="loader" style="display: none"><i class="fa fa-refresh fa-spin"></i> {L_AJAX_PROCESSING}</div>
-		<div id="ajax-message" class="message"></div>
-
-		<div class="bulk-container">
-			<div style="display: none">
-				<button id="add-new">{L_ADD_CATEGORY}</button>
-				<button id="add-bulk">&nbsp;</button>
-			</div>
-			<div class="bulk-dropdown">
-				<form id="bulk_form" name="bulk_form" action="" method="post">
-					<fieldset>
-						<p><strong>{L_ADD_BULK_ITEMS}</strong></p>
-						<a class="toggle-view" style="float: right" href="#help-addbulk">{L_HELP}</a><br clear="both" />
-						<p id="help-addbulk" class="small bg2" style="display: none">{L_ADD_BULK_EXPLAIN}</p><br />
-
-						<label>{L_ITEM_PARENT}</label>
-						<select id="parent_id" name="parent_id">
-							<option value="0">{L_NO_PARENT}</option>
-							<!-- BEGIN option -->
-							<option value="{option.CAT_ID}">{option.S_PADDING}{option.CAT_NAME}</option>
-							<!-- END option -->
-						</select><br /><br />
-						<label>{L_GROUP_ITEMS}</label>
-						<textarea id="add_list" rows="5" cols="50" name="add_list"></textarea>
-						<p class="submit-buttons">
-							<input class="button2" type="reset" id="cancel" name="cancel" value="{L_CANCEL}" />
-							<input class="button1" type="submit" id="submit" name="submit" value="{L_SUBMIT}" />&nbsp;
-						</p>
-					</fieldset>
-				</form>
-			</div>
+<script id="item-template" type="text/x-jquery-tmpl">
+	{% verbatim %}
+	<li id="item-{{ cat_id }}">
+		<div class="ui-state-default ui-corner-all">
+			<span class="icon-container left">
+				<a href="#" id="icon-{{ cat_id }}" class="icon-select ui-dialog-titlebar-close ui-corner-all"><i class="{{ item_icon }}"></i></a>
+			</span>
+			<span class="editable" data-field="cat_name">{{ cat_name }}</span>
+			<input type="checkbox" class="select-item right" />
+			<a href="#" id="item-{{ cat_id }}" class="right item-delete item-spacing" title="{{ lang('deleteNode') }}"><i class="fa fa-close"></i></a>
 		</div>
-
-		<div class="align-right"><span style="display: none"><input type="checkbox" id="select-all" /> {L_SELECT_ALL}</span>&nbsp;</div>
-		<div class="row3 items-container">
-			<div id="no-items" class="center">{L_NO_ITEMS}</div>
-			<div class="items-list">
-				<ol id="sortable" class="ui-helper-reset ui-helper-clearfix ui-corner-all" style="display: none;"></ol>
-			</div>
-		</div>
-
-		<button id="save" class="right" style="display: none">{L_SAVE_CHANGES}</button>
-		<button id="delete-selected" class="right" style="display: none">{L_DELETE_SELECTED}</button>
-		<button id="rebuild-tree" class="right" style="display: none">{L_REBUILD_TREE}</button>
-
-		{ICON_PICKER}
-
-		<script id="item-template" type="text/x-jquery-tmpl">
-			{% verbatim %}
-			<li id="item-{{ cat_id }}">
-				<div class="ui-state-default ui-corner-all">
-					<span class="icon-container left">
-						<a href="#" id="icon-{{ cat_id }}" class="icon-select ui-dialog-titlebar-close ui-corner-all"><i class="{{ cat_icon }}"></i></a>
-					</span>
-					<span class="editable" data-field="cat_name">{{ cat_name }}</span>
-					<input type="checkbox" class="select-item right" />
-					<a href="#" id="item-{{ cat_id }}" class="right item-action item-spacing" data-action="delete" title="{L_deleteNode}"><i class="fa fa-close"></i></a>
-				</div>
-			</li>
-			{% endverbatim %}
-		</script>
-
-		<div id="dialog-confirm-group" class="dialog" title="{L_DELETE_GROUP}" style="display: none;">
-			<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>{L_DELETE_GROUP_CONFIRM}</p>
-		</div>
-
-		<div id="dialog-confirm-group-item" class="dialog" title="{L_DELETE_ITEM}" style="display: none;">
-			<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>{L_DELETE_ITEM_CONFIRM}</p>
-		</div>
-	</div>
-</div>
-</div>
-
-<script type="text/javascript">
-// <![CDATA[
-	var ajaxUrl	= '{UA_AJAX_URL}';
-	var groupId	= {UA_GROUP_ID};
-	var lang = {
-		none				: '{{ lang('NO_PARENT')|e('js') }}',
-		addNode				: '{{ lang('ADD_ITEM')|e('js') }}',
-		editNode			: '{{ lang('EDIT_ITEM')|e('js') }}',
-		changeMe			: '{{ lang('CHANGE_ME')|e('js') }}',
-		saveNode			: '{{ lang('SAVE')|e('js') }}',
-		hideNode			: '{{ lang('HIDE')|e('js') }}',
-		showNode			: '{{ lang('SHOW')|e('js') }}',
-		cancel				: '{{ lang('CANCEL')|e('js') }}',
-		remove				: '{{ lang('DELETE')|e('js') }}',
-		deleteNode			: '{{ lang('DELETE_ITEM')|e('js') }}',
-		deleteChildNodes	: '{{ lang('DELETE_KIDS')|e('js') }}',
-		required			: '{{ lang('REQUIRED')|e('js') }}',
-		unsavedChanges		: '{{ lang('UNSAVED_CHANGES')|e('js') }}',
-		errorMessage		: '{{ lang('PROCESSING_ERROR')|e('js') }}'
-	};
-// ]]>
+	</li>
+	{% endverbatim %}
 </script>
 
 <!-- INCLUDE overall_footer.html -->

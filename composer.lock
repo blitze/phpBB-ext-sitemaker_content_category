@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "e1fd72be01efa4e60d0b6cbfc8233b6b",
+    "content-hash": "b51f2ccb00b8c4020dc0054cd1982dc5",
     "packages": [
         {
             "name": "blitze/content",

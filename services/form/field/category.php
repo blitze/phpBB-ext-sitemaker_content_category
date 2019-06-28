@@ -55,17 +55,15 @@ class category extends \blitze\content\services\form\field\choice
 	/**
 	 * @inheritdoc
 	 */
-	public function display_field(array $data, array $topic_data, $view_mode)
+	public function display_field(array $data, array $topic_data, $display_mode, $view_mode)
 	{
 		$list = array();
 		$callable = 'get_category_url';
 
-		// previewing...?
-		if ($this->request->is_set('preview'))
+		if ($display_mode === 'preview')
 		{
 			$callable = 'get_preview_url';
-			$field_value = array_filter(explode("<br>\n", $data['field_value']));
-			$data['field_value'] = array_intersect_key($this->cats, array_flip($field_value));
+			$data['field_value'] = array_intersect_key($this->cats, array_flip($this->ensure_is_array($data['field_value'])));
 		}
 
 		$categories = (array) $data['field_value'];
@@ -81,7 +79,7 @@ class category extends \blitze\content\services\form\field\choice
 	/**
 	 * @inheritdoc
 	 */
-	public function show_form_field($name, array &$data, $forum_id = 0, $topic_id = 0)
+	public function show_form_field(array &$data, $forum_id = 0, $topic_id = 0)
 	{
 		$grp_items = $this->get_group_items($data['field_props']['group_id']);
 
@@ -97,17 +95,17 @@ class category extends \blitze\content\services\form\field\choice
 			$data['field_props']['vertical'] = true;
 		}
 
-		return parent::show_form_field($name, $data);
+		return parent::show_form_field($data);
 	}
 
 	/**
 	 * @inheritdoc
 	 */
-	public function save_field($field_value, array $field_data, array $topic_data)
+	public function save_field(array $field_data, array $topic_data)
 	{
 		$field = $field_data['field_name'];
 		$topic_id = (int) $topic_data['topic_id'];
-		$categories = array_filter((array) $field_value);
+		$categories = array_filter((array) $field_data['field_value']);
 
 		$sql_ary = array();
 		foreach ($categories as $cat_id)

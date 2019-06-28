@@ -6,17 +6,13 @@
 	Only set this to "true" if you have dependencies in the composer.json,
 	otherwise use "false".
 	-->
-	<property name="has-dependencies" value="true" />
+	<property name="has-dependencies" value="false" />
 
 	<target name="clean-package">
 		<!--
 		Remove some unnecessary files/directories
 		${dir}/ is the folder of your extension, e.g. ext/acme/demo/
 		-->
-		<delete dir="${dir}/ext" />
-		<delete dir="${dir}/vendor/cocur" />
-		<delete dir="${dir}/vendor/simplepie" />
-		<delete dir="${dir}/vendor/urodoz" />
 	</target>
 
 	<!--

@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2e39d01150ee90896b748dca6ebda1d9",
+    "content-hash": "d67c1cb8985863ad1ad406aed8c72404",
     "packages": [
         {
             "name": "blitze/content",

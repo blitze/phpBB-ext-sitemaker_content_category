@@ -45,13 +45,13 @@ class save_tree extends base_action
 
 		for ($i = 0, $size = sizeof($raw_tree); $i < $size; $i++)
 		{
-			$item_id = (int) $raw_tree[$i]['item_id'];
+			$cat_id = (int) $raw_tree[$i]['cat_id'];
 			$parent_id = (int) $raw_tree[$i]['parent_id'];
 
-			if ($item_id)
+			if ($cat_id)
 			{
-				$tree[$item_id] = array(
-					'cat_id'	=> $item_id,
+				$tree[$cat_id] = array(
+					'cat_id'	=> $cat_id,
 					'parent_id' => $parent_id,
 				);
 			}

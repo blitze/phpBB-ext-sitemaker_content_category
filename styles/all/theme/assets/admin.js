@@ -7,6 +7,7 @@ $(document).ready(function() {
 		fields: {
 			itemId: 'cat_id',
 			itemTitle: 'cat_name',
+			itemIcon: 'cat_icon'
 		},
 	});
 });

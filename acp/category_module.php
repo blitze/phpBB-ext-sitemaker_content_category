@@ -9,8 +9,6 @@
 
 namespace blitze\category\acp;
 
-use blitze\sitemaker\services\menus\nestedset;
-
 /**
 * @package acp
 */

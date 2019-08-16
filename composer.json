@@ -18,7 +18,7 @@
 		"blitze/content": ">=3.0.0-RC4,<4.0.0"
 	},
 	"require-dev": {
-		"phing/phing": "^2.16"
+		"phing/phing": "2.4.*"
 	},
 	"extra": {
 		"display-name": "SiteMaker Content Categories",

@@ -134,19 +134,17 @@ class listener implements EventSubscriberInterface
 	 */
 	public function filter_by_category(\phpbb\event\data $event)
 	{
-		if (isset($event['filters']['category']))
+		if (isset($event['filters']['category']) && sizeof($cat_ids = $this->get_category_ids($event['filters']['category'])))
 		{
 			$sql_array = (array) $event['sql_array'];
 
 			$sql_array = array_merge_recursive($sql_array, array(
 				'FROM'	=> array(
-					$this->categories_data_table	=> 'cats_data',
-					$this->categories_table			=> 'cats',
+					$this->categories_data_table	=> 'cd',
 				),
 				'WHERE'	=> array(
-					't.topic_id = cats_data.topic_id',
-					'cats_data.cat_id = cats.cat_id',
-					$this->db->sql_in_set('cats.cat_name', array_map('urldecode', $event['filters']['category'])),
+					't.topic_id = cd.topic_id',
+					$this->db->sql_in_set('cd.cat_id', $cat_ids),
 				),
 			));
 
@@ -183,5 +181,36 @@ class listener implements EventSubscriberInterface
 				$categories[$topic_id][$field] = $this->translator->lang('UNCATEGORIZED');
 			}
 		}
+	}
+
+	/**
+	 * @param array $cat_names
+	 * @return array
+	 */
+	protected function get_category_ids(array $cat_names)
+	{
+		$sql = $this->db->sql_build_query('SELECT', array(
+			'SELECT'	=> 'c2.cat_id',
+			'FROM'		=> array(
+				$this->categories_table => 'c1'
+			),
+			'LEFT_JOIN'	=> array(
+				array(
+					'FROM'	=> array($this->categories_table => 'c2'),
+					'ON'	=> 'c2.left_id >= c1.left_id AND c2.right_id <= c1.right_id',
+				),
+			),
+			'WHERE'		=> $this->db->sql_in_set('c1.cat_name', array_map('urldecode', $cat_names)),
+		));
+		$result = $this->db->sql_query($sql);
+
+		$cat_ids = [];
+		while ($row = $this->db->sql_fetchrow($result))
+		{
+			$cat_ids[] = $row['cat_id'];
+		}
+		$this->db->sql_freeresult($result);
+
+		return $cat_ids;
 	}
 }

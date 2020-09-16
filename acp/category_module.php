@@ -1,4 +1,5 @@
 <?php
+
 /**
  *
  * @package sitemaker
@@ -10,8 +11,8 @@
 namespace blitze\category\acp;
 
 /**
-* @package acp
-*/
+ * @package acp
+ */
 class category_module
 {
 	/** @var \phpbb\controller\helper */
@@ -58,7 +59,7 @@ class category_module
 
 		$this->controller_helper = $phpbb_container->get('controller.helper');
 		$this->mapper_factory = $phpbb_container->get('blitze.category.mapper.factory');
-		$this->icon = $phpbb_container->get('blitze.sitemaker.icon_picker');
+		$this->icon = $phpbb_container->get('blitze.sitemaker.icons.picker');
 	}
 
 	/**

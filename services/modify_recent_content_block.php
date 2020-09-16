@@ -1,4 +1,5 @@
 <?php
+
 /**
  *
  * @package sitemaker
@@ -76,6 +77,7 @@ class modify_recent_content_block extends \blitze\content\blocks\recent
 	 */
 	public function display(array $bdata, $edit_mode = false)
 	{
+		$group_id = 0;
 		if (($category = preg_split('/-/', $bdata['settings']['category'])) !== false)
 		{
 			$category = array_filter($category);
